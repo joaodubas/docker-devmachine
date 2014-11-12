@@ -83,6 +83,18 @@ RUN git clone https://github.com/joaodubas/webfaction-dotfiles.git \
             ${DOTFILE} \
     && cd ${DOTFILE} \
     && git submodule update --init --recursive \
+
+# link to home
+RUN ln -s ${DOTFILE}/.bash_aliases ${HOME} \
+    && ln -s ${DOTFILE}/.bash_personal ${HOME} \
+    && ln -s ${DOTFILE}/.tmux.conf ${HOME} \
+    && ln -s ${DOTFILE}/.vimrc ${HOME} \
+    && ln -s ${DOTIFLE}/.vim ${HOME} \
+    && ln -s ${DOTFILE}/.gitignore_global ${HOME} \
+    && cp ${DOTFILE}/.gitconfig ${HOME}/
+
+# install vim bundles
+RUN vim +BundleInstall +qall -e -s \
     && echo "install command t" \
     && cd ${DOTFILE}/.vim/bundle/Command-T/ruby/command-t \
     && ruby extconf.rb \
@@ -93,15 +105,6 @@ RUN git clone https://github.com/joaodubas/webfaction-dotfiles.git \
     && echo "install ycm" \
     && cd ${DOTFILE}/.vim/bundle/YouCompleteMe \
     && bash install.sh
-
-# link to home
-RUN ln -s ${DOTFILE}/.bash_aliases ${HOME} \
-    && ln -s ${DOTFILE}/.bash_personal ${HOME} \
-    && ln -s ${DOTFILE}/.tmux.conf ${HOME} \
-    && ln -s ${DOTFILE}/.vimrc ${HOME} \
-    && ln -s ${DOTIFLE}/.vim ${HOME} \
-    && ln -s ${DOTFILE}/.gitignore_global ${HOME} \
-    && cp ${DOTFILE}/.gitconfig ${HOME}/
 
 # install oh-my-zsh
 RUN curl -L http://install.ohmyz.sh | bash
