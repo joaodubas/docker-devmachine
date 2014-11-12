@@ -1,0 +1,109 @@
+# development machine
+#
+# VERSION: see `TAG`
+FROM ubuntu:14.04
+MAINTAINER Joao Paulo Dubas "joao.dubas@gmail.com"
+
+# install system deps
+RUN apt-get -y -qq --force-yes update \
+    && apt-get -y -qq --force-yes install \
+        linux-headers-generic \
+        software-properties-common \
+    && add-apt-repository -y ppa:fcwu-tw/ppa \
+    && apt-get -y -qq --force-yes update \
+    && apt-get -y -qq --force-yes install \
+        build-essential \
+        locales \
+        python-setuptools \
+        python-dev \
+        ruby-dev \
+        vim \
+        vim-nox \
+        vim-scripts \
+        tmux \
+        git \
+        make \
+        cmake \
+        curl \
+        zsh \
+        openssl \
+        sudo
+
+# prepare locales
+RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
+    && echo "pt_BR.UTF-8 UTF-8" >> /etc/locale.gen \
+    && locale-gen --purge --lang en_US \
+    && locale-gen --purge --lang pt_BR \
+    && locale-gen
+
+# create dev user
+RUN useradd \
+        -G sudo \
+        -d /home/dev \
+        -m \
+        -p $(openssl passwd 123app4) \
+        -s /bin/zsh \
+        dev
+USER dev
+
+# prepare home dir
+ENV HOME /home/dev
+ENV HOMESRC ${HOME}/local/src
+ENV HOMEBIN ${HOME}/local/bin
+RUN mkdir -p $HOME/{public,local/{bin,src}}
+
+# install nodejs
+ENV NODE_VERSION v0.10.33
+ENV NODE_FILENAME node-${NODE_VERSION}-linux-x64
+ENV NODE_TARNAME ${NODE_FILENAME}.tar.gz
+ENV NODE_URL http://nodejs.org/dist/${NODE_VERSION}/${NODE_TARNAME}
+RUN cd $HOMESRC \
+    && curl -O ${NODE_URL} \
+    && tar -xzf ${NODE_TARNAME} \
+    && ln -s ${HOMESRC}/${NODE_FILENAME} ${HOMESRC}/nodejs \
+    && ln -s ${HOMESRC}/nodejs/bin/* ${HOMEBIN}/
+    && rm ${NODE_TARnAME}
+
+# install golang
+ENV GO_VERSION 1.3.3
+ENV GO_FILENAME go${GO_VERSION}.linux-amd64
+ENV GO_TARNAME ${GO_FILENAME}.tar.gz
+ENV GO_URL https://storage.googleapis.com/golang/${GO_TARNAME}
+RUN cd $HOMESRC \
+    && curl -O ${GO_URL} \
+    && tar -xzf ${GO_TARNAME} \
+    && ln -s ${HOMESRC}/go/bin/* ${HOMEBIN}/ \
+    && mkdir -p ${HOME}/local/go/{src,bin,pkg}
+
+# clone dotfiles
+ENV DOTFILE ${HOMESRC}/dotfiles
+RUN git clone https://github.com/joaodubas/webfaction-dotfiles.git \
+            ${DOTFILE} \
+    && cd ${DOTFILE} \
+    && git submodule update --init --recursive \
+    && echo "install command t" \
+    && cd ${DOTFILE}/.vim/bundle/Command-T/ruby/command-t \
+    && ruby extconf.rb \
+    && make \
+    && echo "install tern"\
+    && cd ${DOTFILE}/.vim/bundle/tern_for_vim \
+    && ${HOMEBIN}/npm install \
+    && echo "install ycm" \
+    && cd ${DOTFILE}/.vim/bundle/YouCompleteMe \
+    && bash install.sh
+
+# link to home
+RUN ln -s ${DOTFILE}/.bash_aliases ${HOME} \
+    && ln -s ${DOTFILE}/.bash_personal ${HOME} \
+    && ln -s ${DOTFILE}/.tmux.conf ${HOME} \
+    && ln -s ${DOTFILE}/.vimrc ${HOME} \
+    && ln -s ${DOTIFLE}/.vim ${HOME} \
+    && ln -s ${DOTFILE}/.gitignore_global ${HOME} \
+    && cp ${DOTFILE}/.gitconfig ${HOME}/
+
+# install oh-my-zsh
+RUN curl -L http://install.ohmyz.sh | bash
+
+# conf container
+WORKDIR /home/dev
+CMD /bin/zsh
