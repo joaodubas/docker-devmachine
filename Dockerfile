@@ -50,7 +50,9 @@ USER dev
 ENV HOME /home/dev
 ENV HOMESRC ${HOME}/local/src
 ENV HOMEBIN ${HOME}/local/bin
-RUN mkdir -p $HOME/{public,local/{bin,src}}
+RUN mkdir -p $HOME/public \
+    && mkdir -p $HOMESRC \
+    && mkdir -p $HOMEBIN
 
 # install nodejs
 ENV NODE_VERSION v0.10.33
