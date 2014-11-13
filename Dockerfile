@@ -84,7 +84,7 @@ ENV DOTFILE ${HOMESRC}/dotfiles
 RUN git clone https://github.com/joaodubas/webfaction-dotfiles.git \
             ${DOTFILE} \
     && cd ${DOTFILE} \
-    && git submodule update --init --recursive \
+    && git submodule update --init --recursive
 
 # link to home
 RUN ln -s ${DOTFILE}/.bash_aliases ${HOME} \
