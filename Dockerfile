@@ -63,8 +63,8 @@ RUN cd $HOMESRC \
     && curl -O ${NODE_URL} \
     && tar -xzf ${NODE_TARNAME} \
     && ln -s ${HOMESRC}/${NODE_FILENAME} ${HOMESRC}/nodejs \
-    && ln -s ${HOMESRC}/nodejs/bin/* ${HOMEBIN}/
-    && rm ${NODE_TARnAME}
+    && ln -s ${HOMESRC}/nodejs/bin/* ${HOMEBIN}/ \
+    && rm ${NODE_TARNAME}
 
 # install golang
 ENV GO_VERSION 1.3.3
@@ -77,7 +77,8 @@ RUN cd $HOMESRC \
     && ln -s ${HOMESRC}/go/bin/* ${HOMEBIN}/ \
     && mkdir -p ${HOME}/local/go/src \
     && mkdir -p ${HOME}/local/go/bin \
-    && mkdir -p ${HOME}/local/go/pkg
+    && mkdir -p ${HOME}/local/go/pkg \
+    && rm ${GO_TARNAME}
 
 # clone dotfiles
 ENV DOTFILE ${HOMESRC}/dotfiles
