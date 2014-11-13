@@ -92,7 +92,7 @@ RUN ln -s ${DOTFILE}/.bash_aliases ${HOME} \
     && ln -s ${DOTFILE}/.bash_personal ${HOME} \
     && ln -s ${DOTFILE}/.tmux.conf ${HOME} \
     && ln -s ${DOTFILE}/.vimrc ${HOME} \
-    && ln -s ${DOTIFLE}/.vim ${HOME} \
+    && ln -s ${DOTFILE}/.vim ${HOME} \
     && ln -s ${DOTFILE}/.gitignore_global ${HOME} \
     && cp ${DOTFILE}/.gitconfig ${HOME}/
 
