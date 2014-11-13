@@ -97,7 +97,7 @@ RUN ln -s ${DOTFILE}/.bash_aliases ${HOME} \
     && cp ${DOTFILE}/.gitconfig ${HOME}/
 
 # install vim bundles
-RUN vim +BundleInstall +qall -e -s \
+RUN printf 'y' | vim +BundleInstall +qall \
     && echo "install command t" \
     && cd ${DOTFILE}/.vim/bundle/Command-T/ruby/command-t \
     && ruby extconf.rb \
@@ -107,11 +107,16 @@ RUN vim +BundleInstall +qall -e -s \
     && ${HOMEBIN}/npm install \
     && echo "install ycm" \
     && cd ${DOTFILE}/.vim/bundle/YouCompleteMe \
-    && bash install.sh
+    && sh install.sh
 
 # install oh-my-zsh
-RUN curl -L http://install.ohmyz.sh | bash
+RUN git clone https://github.com/robbyrussell/oh-my-zsh.git ${HOME}/.oh-my-zsh \
+    && cp $HOME/.oh-my-zsh/templates/zshrc.zsh-template ${HOME}/.zshrc \
+    && echo '\n' >> ${HOME}/.zshrc \
+    && echo '# local resources' >> ${HOME}/.zshrc \
+    && echo 'source $HOME/.bash_aliases' >> ${HOME}/.zshrc
 
 # conf container
+VOLUME ["home/dev/public"]
 WORKDIR /home/dev
 CMD /bin/zsh
