@@ -75,7 +75,9 @@ RUN cd $HOMESRC \
     && curl -O ${GO_URL} \
     && tar -xzf ${GO_TARNAME} \
     && ln -s ${HOMESRC}/go/bin/* ${HOMEBIN}/ \
-    && mkdir -p ${HOME}/local/go/{src,bin,pkg}
+    && mkdir -p ${HOME}/local/go/src \
+    && mkdir -p ${HOME}/local/go/bin \
+    && mkdir -p ${HOME}/local/go/pkg
 
 # clone dotfiles
 ENV DOTFILE ${HOMESRC}/dotfiles
