@@ -80,6 +80,10 @@ RUN cd $HOMESRC \
     && mkdir -p ${HOME}/local/go/pkg \
     && rm ${GO_TARNAME}
 
+# install virtualenv
+RUN easy_install pip \
+    && pip install virtualenv virtualenvwrapper
+
 # clone dotfiles
 ENV DOTFILE ${HOMESRC}/dotfiles
 RUN git clone https://github.com/joaodubas/webfaction-dotfiles.git \
