@@ -36,6 +36,10 @@ RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
     && locale-gen --purge --lang pt_BR \
     && locale-gen
 
+# install virtualenv
+RUN easy_install pip \
+    && pip install virtualenv virtualenvwrapper
+
 # create dev user
 RUN useradd \
         -G sudo \
@@ -79,10 +83,6 @@ RUN cd $HOMESRC \
     && mkdir -p ${HOME}/local/go/bin \
     && mkdir -p ${HOME}/local/go/pkg \
     && rm ${GO_TARNAME}
-
-# install virtualenv
-RUN easy_install pip \
-    && pip install virtualenv virtualenvwrapper
 
 # clone dotfiles
 ENV DOTFILE ${HOMESRC}/dotfiles
