@@ -58,6 +58,11 @@ RUN mkdir -p $HOME/public \
     && mkdir -p $HOMESRC \
     && mkdir -p $HOMEBIN
 
+# configure virtualenv
+ENV WORKON_HOME ${HOME}/.venv
+ENV PROJECT_HOME ${HOME}/public
+RUN source /usr/local/bin/virtualenvwrapper.sh
+
 # install nodejs
 ENV NODE_VERSION v0.10.33
 ENV NODE_FILENAME node-${NODE_VERSION}-linux-x64
