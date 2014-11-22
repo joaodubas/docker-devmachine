@@ -61,7 +61,6 @@ RUN mkdir -p $HOME/public \
 # configure virtualenv
 ENV WORKON_HOME ${HOME}/.venv
 ENV PROJECT_HOME ${HOME}/public
-RUN source /usr/local/bin/virtualenvwrapper.sh
 
 # install nodejs
 ENV NODE_VERSION v0.10.33
