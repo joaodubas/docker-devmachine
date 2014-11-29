@@ -40,12 +40,13 @@ RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
 RUN easy_install pip \
     && pip install virtualenv virtualenvwrapper
 
-# create dev user
-RUN useradd \
-        -G sudo \
+# create docker group and dev user
+RUN groupadd -g 999 docker \
+    && useradd \
+        -G sudo,docker \
         -d /home/dev \
         -m \
-        -p $(openssl passwd 123app4) \
+        -p $(openssl passwd 123dev4) \
         -s /bin/zsh \
         dev
 USER dev
