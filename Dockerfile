@@ -122,6 +122,6 @@ RUN git clone https://github.com/robbyrussell/oh-my-zsh.git ${HOME}/.oh-my-zsh \
     && echo 'source $HOME/.bash_aliases' >> ${HOME}/.zshrc
 
 # conf container
-VOLUME ["/home/dev/public"]
-WORKDIR /home/dev
+VOLUME ["/home/app/public"]
+WORKDIR /home/app
 CMD /bin/zsh
