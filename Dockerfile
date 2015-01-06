@@ -44,15 +44,15 @@ RUN easy_install pip \
 RUN groupadd -g 999 docker \
     && useradd \
         -G sudo,docker \
-        -d /home/dev \
+        -d /home/app \
         -m \
         -p $(openssl passwd 123dev4) \
         -s /bin/zsh \
-        dev
-USER dev
+        app
+USER app
 
 # prepare home dir
-ENV HOME /home/dev
+ENV HOME /home/app
 ENV HOMESRC ${HOME}/local/src
 ENV HOMEBIN ${HOME}/local/bin
 RUN mkdir -p $HOME/public \
