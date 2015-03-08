@@ -40,7 +40,7 @@ RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
 RUN easy_install pip \
     && pip install virtualenv virtualenvwrapper
 
-# create docker group and dev user
+# create docker group and app user
 RUN groupadd -g 999 docker \
     && useradd \
         -G sudo,docker \
