@@ -72,7 +72,7 @@ RUN cd $HOMESRC \
     && rm ${IO_TARNAME}
 
 # install golang
-ENV GO_VERSION 1.3.3
+ENV GO_VERSION 1.4.2
 ENV GO_FILENAME go${GO_VERSION}.linux-amd64
 ENV GO_TARNAME ${GO_FILENAME}.tar.gz
 ENV GO_URL https://storage.googleapis.com/golang/${GO_TARNAME}
