@@ -59,17 +59,17 @@ RUN mkdir -p $HOME/public \
     && mkdir -p $HOMESRC \
     && mkdir -p $HOMEBIN
 
-# install nodejs
-ENV NODE_VERSION v0.10.33
-ENV NODE_FILENAME node-${NODE_VERSION}-linux-x64
-ENV NODE_TARNAME ${NODE_FILENAME}.tar.gz
-ENV NODE_URL http://nodejs.org/dist/${NODE_VERSION}/${NODE_TARNAME}
+# install iojs
+ENV IO_VERSION v1.5.0
+ENV IO_FILENAME iojs-${IO_VERSION}-linux-x64
+ENV IO_TARNAME ${IO_FILENAME}.tar.xz
+ENV IO_URL http://iojs.org/dist/${IO_VERSION}/${IO_TARNAME}
 RUN cd $HOMESRC \
-    && curl -O ${NODE_URL} \
-    && tar -xzf ${NODE_TARNAME} \
-    && ln -s ${HOMESRC}/${NODE_FILENAME} ${HOMESRC}/nodejs \
+    && curl -O ${IO_URL} \
+    && tar -xJfv ${IO_TARNAME} \
+    && ln -s ${HOMESRC}/${IO_FILENAME} ${HOMESRC}/nodejs \
     && ln -s ${HOMESRC}/nodejs/bin/* ${HOMEBIN}/ \
-    && rm ${NODE_TARNAME}
+    && rm ${IO_TARNAME}
 
 # install golang
 ENV GO_VERSION 1.3.3
