@@ -46,7 +46,7 @@ RUN groupadd -g 999 docker \
         -G sudo,docker \
         -d /home/app \
         -m \
-        -p $(openssl passwd 123dev4) \
+        -p $(openssl passwd 123app4) \
         -s /bin/zsh \
         app
 USER app
