@@ -63,10 +63,10 @@ RUN mkdir -p $HOME/public \
 ENV IO_VERSION v1.5.0
 ENV IO_FILENAME iojs-${IO_VERSION}-linux-x64
 ENV IO_TARNAME ${IO_FILENAME}.tar.xz
-ENV IO_URL http://iojs.org/dist/${IO_VERSION}/${IO_TARNAME}
+ENV IO_URL https://iojs.org/dist/${IO_VERSION}/${IO_TARNAME}
 RUN cd $HOMESRC \
     && curl -O ${IO_URL} \
-    && tar -xJfv ${IO_TARNAME} \
+    && tar -xJf ${IO_TARNAME} \
     && ln -s ${HOMESRC}/${IO_FILENAME} ${HOMESRC}/nodejs \
     && ln -s ${HOMESRC}/nodejs/bin/* ${HOMEBIN}/ \
     && rm ${IO_TARNAME}
