@@ -60,7 +60,7 @@ RUN mkdir -p $HOME/public \
     && mkdir -p $HOMEBIN
 
 # install iojs
-ENV IO_VERSION v1.5.0
+ENV IO_VERSION v1.7.1
 ENV IO_FILENAME iojs-${IO_VERSION}-linux-x64
 ENV IO_TARNAME ${IO_FILENAME}.tar.xz
 ENV IO_URL https://iojs.org/dist/${IO_VERSION}/${IO_TARNAME}
