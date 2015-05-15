@@ -5,7 +5,6 @@ FROM ubuntu:14.04
 MAINTAINER Joao Paulo Dubas "joao.dubas@gmail.com"
 
 # install system deps
-ENV TERM xterm
 RUN apt-get -y -qq --force-yes update \
     && apt-get -y -qq --force-yes install \
         linux-headers-generic \
@@ -66,30 +65,28 @@ ENV IO_VERSION v2.0.1
 ENV IO_FILENAME iojs-${IO_VERSION}-linux-x64
 ENV IO_TARNAME ${IO_FILENAME}.tar.xz
 ENV IO_URL https://iojs.org/dist/${IO_VERSION}/${IO_TARNAME}
-RUN curl -L ${IO_URL} | \
-        tar -C ${HOMESRC} -xJf - \
+RUN curl -L ${IO_URL} | tar -C ${HOMESRC} -xJf - \
     && ln -s ${HOMESRC}/${IO_FILENAME} ${HOMESRC}/nodejs \
     && ln -s ${HOMESRC}/nodejs/bin/* ${HOMEBIN}/
 
 # install golang
+ENV GOROOT ${HOMESRC}/go
+ENV GOPATH ${HOME}/local/go
+ENV GOBIN ${GOPATH}/bin
 ENV GO_VERSION 1.4.2
 ENV GO_FILENAME go${GO_VERSION}.linux-amd64
 ENV GO_TARNAME ${GO_FILENAME}.tar.gz
 ENV GO_URL https://storage.googleapis.com/golang/${GO_TARNAME}
-RUN curl -L ${GO_URL} |
-        tar -C ${HOMESRC} -xzf ${GO_TARNAME} - \
+RUN curl -L ${GO_URL} | tar -C ${HOMESRC} -xzf ${GO_TARNAME} - \
     && ln -s ${HOMESRC}/go/bin/* ${HOMEBIN}/ \
-    && mkdir -p ${HOME}/local/go/src \
-    && mkdir -p ${HOME}/local/go/bin \
-    && mkdir -p ${HOME}/local/go/pkg
-ENV GOROOT ${HOMESRC}/go
-ENV GOPATH ${HOME}/local/go
-ENV GOBIN ${GOPATH}/bin
+    && mkdir -p ${GOPATH}/src \
+    && mkdir -p ${GOPATH}/bin \
+    && mkdir -p ${GOPATH}/pkg
 
 # clone dotfiles
 ENV DOTFILE ${HOMESRC}/dotfiles
 RUN git clone https://github.com/joaodubas/webfaction-dotfiles.git \
-            ${DOTFILE} \
+        ${DOTFILE} \
     && cd ${DOTFILE} \
     && git submodule update --init --recursive
 
@@ -118,13 +115,15 @@ RUN printf 'y' | vim +BundleInstall +qall \
     && ${HOMEBIN}/go get github.com/nsf/gocode
 
 # install oh-my-zsh
-RUN git clone https://github.com/robbyrussell/oh-my-zsh.git ${HOME}/.oh-my-zsh \
+RUN git clone https://github.com/robbyrussell/oh-my-zsh.git \
+        ${HOME}/.oh-my-zsh \
     && cp $HOME/.oh-my-zsh/templates/zshrc.zsh-template ${HOME}/.zshrc \
     && echo '\n' >> ${HOME}/.zshrc \
     && echo '# local resources' >> ${HOME}/.zshrc \
     && echo 'source $HOME/.bash_aliases' >> ${HOME}/.zshrc
 
 # conf container
+ENV TERM xterm-256color
 VOLUME ["/home/app/public"]
 WORKDIR /home/app
 CMD ["/usr/bin/zsh"]
