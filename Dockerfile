@@ -62,30 +62,26 @@ RUN mkdir -p $HOME/public \
     && mkdir -p $HOMEBIN
 
 # install iojs
-ENV IO_VERSION v1.7.1
+ENV IO_VERSION v2.0.1
 ENV IO_FILENAME iojs-${IO_VERSION}-linux-x64
 ENV IO_TARNAME ${IO_FILENAME}.tar.xz
 ENV IO_URL https://iojs.org/dist/${IO_VERSION}/${IO_TARNAME}
-RUN cd $HOMESRC \
-    && curl -O ${IO_URL} \
-    && tar -xJf ${IO_TARNAME} \
+RUN curl -L ${IO_URL} | \
+        tar -C ${HOMESRC} -xJf - \
     && ln -s ${HOMESRC}/${IO_FILENAME} ${HOMESRC}/nodejs \
-    && ln -s ${HOMESRC}/nodejs/bin/* ${HOMEBIN}/ \
-    && rm ${IO_TARNAME}
+    && ln -s ${HOMESRC}/nodejs/bin/* ${HOMEBIN}/
 
 # install golang
 ENV GO_VERSION 1.4.2
 ENV GO_FILENAME go${GO_VERSION}.linux-amd64
 ENV GO_TARNAME ${GO_FILENAME}.tar.gz
 ENV GO_URL https://storage.googleapis.com/golang/${GO_TARNAME}
-RUN cd $HOMESRC \
-    && curl -O ${GO_URL} \
-    && tar -xzf ${GO_TARNAME} \
+RUN curl -L ${GO_URL} |
+        tar -C ${HOMESRC} -xzf ${GO_TARNAME} - \
     && ln -s ${HOMESRC}/go/bin/* ${HOMEBIN}/ \
     && mkdir -p ${HOME}/local/go/src \
     && mkdir -p ${HOME}/local/go/bin \
-    && mkdir -p ${HOME}/local/go/pkg \
-    && rm ${GO_TARNAME}
+    && mkdir -p ${HOME}/local/go/pkg
 ENV GOROOT ${HOMESRC}/go
 ENV GOPATH ${HOME}/local/go
 ENV GOBIN ${GOPATH}/bin
