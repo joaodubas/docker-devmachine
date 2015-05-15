@@ -77,7 +77,7 @@ ENV GO_VERSION 1.4.2
 ENV GO_FILENAME go${GO_VERSION}.linux-amd64
 ENV GO_TARNAME ${GO_FILENAME}.tar.gz
 ENV GO_URL https://storage.googleapis.com/golang/${GO_TARNAME}
-RUN curl -L ${GO_URL} | tar -C ${HOMESRC} -xzf ${GO_TARNAME} - \
+RUN curl -L ${GO_URL} | tar -C ${HOMESRC} -xzf - \
     && ln -s ${HOMESRC}/go/bin/* ${HOMEBIN}/ \
     && mkdir -p ${GOPATH}/src \
     && mkdir -p ${GOPATH}/bin \
