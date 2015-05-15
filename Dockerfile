@@ -5,6 +5,7 @@ FROM ubuntu:14.04
 MAINTAINER Joao Paulo Dubas "joao.dubas@gmail.com"
 
 # install system deps
+ENV TERM xterm
 RUN apt-get -y -qq --force-yes update \
     && apt-get -y -qq --force-yes install \
         linux-headers-generic \
@@ -35,6 +36,7 @@ RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
     && locale-gen --purge --lang en_US \
     && locale-gen --purge --lang pt_BR \
     && locale-gen
+ENV LANG en_US.utf8
 
 # install virtualenv
 RUN easy_install pip \
@@ -47,7 +49,7 @@ RUN groupadd -g 999 docker \
         -d /home/app \
         -m \
         -p $(openssl passwd 123app4) \
-        -s /bin/zsh \
+        -s $(which zsh) \
         app
 USER app
 
@@ -84,6 +86,9 @@ RUN cd $HOMESRC \
     && mkdir -p ${HOME}/local/go/bin \
     && mkdir -p ${HOME}/local/go/pkg \
     && rm ${GO_TARNAME}
+ENV GOROOT ${HOMESRC}/go
+ENV GOPATH ${HOME}/local/go
+ENV GOBIN ${GOPATH}/bin
 
 # clone dotfiles
 ENV DOTFILE ${HOMESRC}/dotfiles
@@ -112,7 +117,9 @@ RUN printf 'y' | vim +BundleInstall +qall \
     && ${HOMEBIN}/npm install \
     && echo "install ycm" \
     && cd ${DOTFILE}/.vim/bundle/YouCompleteMe \
-    && sh install.sh
+    && sh install.sh \
+    && echo "install nsf gocode" \
+    && ${HOMEBIN}/go get github.com/nsf/gocode
 
 # install oh-my-zsh
 RUN git clone https://github.com/robbyrussell/oh-my-zsh.git ${HOME}/.oh-my-zsh \
@@ -124,4 +131,4 @@ RUN git clone https://github.com/robbyrussell/oh-my-zsh.git ${HOME}/.oh-my-zsh \
 # conf container
 VOLUME ["/home/app/public"]
 WORKDIR /home/app
-CMD /bin/zsh
+CMD ["/usr/bin/zsh"]
