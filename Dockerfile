@@ -122,6 +122,15 @@ RUN git clone https://github.com/robbyrussell/oh-my-zsh.git \
     && echo '# local resources' >> ${HOME}/.zshrc \
     && echo 'source $HOME/.bash_aliases' >> ${HOME}/.zshrc
 
+# install docker-compose
+ENV COMPOSE_VERSION 1.4.0
+ENV COMPOSE_URL https://github.com/docker/compose/releases/download
+RUN curl \
+        -L ${COMPOSE_URL}/${COMPOSE_VERSION}/docker-compose-Linux-x86_64 \
+        -o ${HOMEBIN}/docker-compose \
+    && chmod 750 ${HOMEBIN}/docker-compose \
+    && chown app:app ${HOMEBIN}/docker-compose
+
 # conf container
 ENV TERM xterm-256color
 VOLUME ["/home/app/public"]
