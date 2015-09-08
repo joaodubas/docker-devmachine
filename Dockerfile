@@ -61,7 +61,7 @@ RUN mkdir -p $HOME/public \
     && mkdir -p $HOMEBIN
 
 # install iojs
-ENV IO_VERSION v2.0.1
+ENV IO_VERSION v3.3.0
 ENV IO_FILENAME iojs-${IO_VERSION}-linux-x64
 ENV IO_TARNAME ${IO_FILENAME}.tar.xz
 ENV IO_URL https://iojs.org/dist/${IO_VERSION}/${IO_TARNAME}
@@ -73,7 +73,7 @@ RUN curl -L ${IO_URL} | tar -C ${HOMESRC} -xJf - \
 ENV GOROOT ${HOMESRC}/go
 ENV GOPATH ${HOME}/local/go
 ENV GOBIN ${GOPATH}/bin
-ENV GO_VERSION 1.4.2
+ENV GO_VERSION 1.5
 ENV GO_FILENAME go${GO_VERSION}.linux-amd64
 ENV GO_TARNAME ${GO_FILENAME}.tar.gz
 ENV GO_URL https://storage.googleapis.com/golang/${GO_TARNAME}
