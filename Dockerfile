@@ -111,8 +111,8 @@ RUN printf 'y' | vim +BundleInstall +qall \
     && echo "install ycm" \
     && cd ${DOTFILE}/.vim/bundle/YouCompleteMe \
     && sh install.sh \
-    && echo "install nsf gocode" \
-    && ${HOMEBIN}/go get github.com/nsf/gocode
+    && echo "install vim-go deps" \
+    && printf 'y' | vim +GoInstall +qall
 
 # install oh-my-zsh
 RUN git clone https://github.com/robbyrussell/oh-my-zsh.git \
