@@ -61,19 +61,19 @@ RUN mkdir -p $HOME/public \
     && mkdir -p $HOMEBIN
 
 # install iojs
-ENV IO_VERSION v3.3.0
-ENV IO_FILENAME iojs-${IO_VERSION}-linux-x64
-ENV IO_TARNAME ${IO_FILENAME}.tar.xz
-ENV IO_URL https://iojs.org/dist/${IO_VERSION}/${IO_TARNAME}
-RUN curl -L ${IO_URL} | tar -C ${HOMESRC} -xJf - \
-    && ln -s ${HOMESRC}/${IO_FILENAME} ${HOMESRC}/nodejs \
+ENV JS_VERSION v5.6.0
+ENV JS_FILENAME nodejs-${JS_VERSION}-linux-x64
+ENV JS_TARNAME ${JS_FILENAME}.tar.xz
+ENV JS_URL https://nodejs.org/dist/${JS_VERSION}/${JS_TARNAME}
+RUN curl -L ${JS_URL} | tar -C ${HOMESRC} -xJf - \
+    && ln -s ${HOMESRC}/${JS_FILENAME} ${HOMESRC}/nodejs \
     && ln -s ${HOMESRC}/nodejs/bin/* ${HOMEBIN}/
 
 # install golang
 ENV GOROOT ${HOMESRC}/go
 ENV GOPATH ${HOME}/local/go
 ENV GOBIN ${GOPATH}/bin
-ENV GO_VERSION 1.5
+ENV GO_VERSION 1.6
 ENV GO_FILENAME go${GO_VERSION}.linux-amd64
 ENV GO_TARNAME ${GO_FILENAME}.tar.gz
 ENV GO_URL https://storage.googleapis.com/golang/${GO_TARNAME}
@@ -123,7 +123,7 @@ RUN git clone https://github.com/robbyrussell/oh-my-zsh.git \
     && echo 'source $HOME/.bash_aliases' >> ${HOME}/.zshrc
 
 # install docker-compose
-ENV COMPOSE_VERSION 1.4.0
+ENV COMPOSE_VERSION 1.6.0
 ENV COMPOSE_URL https://github.com/docker/compose/releases/download
 RUN curl \
         -L ${COMPOSE_URL}/${COMPOSE_VERSION}/docker-compose-Linux-x86_64 \
